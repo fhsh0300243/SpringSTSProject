@@ -18,14 +18,24 @@
                 <div class="ff-login-box">
                     <form method="post" name="lForm">
                         <h2 class="title">台股練兵系統</h2>
-                        <input type="text" class="form-control form-control-lg font-weight-light mt-4" placeholder="Username" name="userName"><span class="wrong">${errorMsgMap.AccountEmptyError}</span>
-                        <input type="password" class="form-control form-control-lg font-weight-light mt-3" placeholder="Password" name="userPassword"><span class="wrong">${errorMsgMap.PasswordEmptyError}</span>
+                        <input type="text" class="form-control form-control-lg font-weight-light mt-4" placeholder="Username" name="userName">
+                        <span class="wrong">${errorMsgMap.AccountEmptyError}</span>
+                        <input type="password" class="form-control form-control-lg font-weight-light mt-3" placeholder="Password" name="userPassword">
+                        <span class="wrong">${errorMsgMap.PasswordEmptyError}</span>
                         <div class="custom-control custom-checkbox ml-4 mt-3">
                             <input type="checkbox" name="remember-me" class="custom-control-input" id="rememberMe">
                             <label class="custom-control-label" for="rememberMe">Remember Me</label>
                         </div>
-                        <input type="submit" value="Login" class="btn btn-primary btn-lg mt-3 ff-login-btn font-weight-bold" onclick="document.lForm.action='userLoginCheck'"/><span class="wrong">${errorMsgMap.LoginError}</span><span class="registerOK">${msgMapFromRegister.registerOK}</span>
+                        <input type="submit" value="Login" class="btn btn-primary btn-lg mt-3 ff-login-btn font-weight-bold" onclick="document.lForm.action='userLoginCheck'"/>
+                        <span class="wrong">${errorMsgMap.LoginError}</span>
+                        <span class="registerOK">${msgMapFromRegister.registerOK}</span>
+                        <span class="wrong">${msgMapFromRegister.registerError}</span>
                     	<input type="submit" value="Create an account" class="btn btn-primary btn-lg mt-3 ff-login-btn font-weight-bold" onclick="document.lForm.action='userRegister'"/>
+                    	<span class="registerOK">${MsgFromPwdReset.resetSuccess}</span>
+                    	<span class="wrong">${MsgFromActivateAccount.invalidAccount}</span>
+                    	<span class="wrong">${MsgFromActivateAccount.notActivated}</span>
+                    	<span class="registerOK">${MsgFromActivateAccount.ActivateSucess}</span>
+                    	<div><a href="forgetPwd">忘記密碼?</a></div>
                     </form>
                 </div>
             </div>

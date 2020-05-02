@@ -14,8 +14,8 @@ public class UsersService implements IUsersService {
 		this.uDAO = uDAO;
 	}
 	
-	public boolean insertUsers(String userName, String userPassword, int totalMoney) {
-		return uDAO.insertUsers(userName, userPassword, totalMoney);
+	public boolean insertUsers(String userName, String userPassword, int totalMoney, String email) {
+		return uDAO.insertUsers(userName, userPassword, totalMoney, email);
 	}
 	
 	public boolean updateUsersPassword(String userName, String oldUserPassword, String newUserPassword) {
@@ -30,8 +30,24 @@ public class UsersService implements IUsersService {
 		return uDAO.findUsers(userName, userPassword);
 	}
 	
+	public List<Users> findUsersByEmail(String email){
+		return uDAO.findUsersByEmail(email);
+	}
+	
+	public List<Users> findUsersByUserID(int userID){
+		return uDAO.findUsersByUserID(userID);
+	};
+	
 	public int updateUserMoney(int userID, int totalMoney) {
 		return uDAO.updateUserMoney(userID, totalMoney);
+	}
+	
+	public int updateUserActivated(int userID, boolean activated) {
+		return uDAO.updateUserActivated(userID, activated);
+	}
+	
+	public boolean updateUsersPassword(String userName, String userPassword) {
+		return uDAO.updateUsersPassword(userName, userPassword);
 	}
 
 }

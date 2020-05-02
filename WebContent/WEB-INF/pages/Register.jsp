@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,40 +19,62 @@
 	<section class="ff-login">
 		<div class="container">
 			<div class="row">
-	        	<div class="col-sm-12">
-                	<div class="ff-login-box">
+				<div class="col-sm-12">
+					<div class="ff-login-box">
 						<form name="rForm" action="userRegisterCheck" method="post">
 							<h2 class="title">建立帳號</h2>
+							<label for="email">E-mail</label>
+							<input type="text" id="email" name="email"
+								class="form-control form-control-lg font-weight-light mt-1"
+								placeholder="E-mail" required> 
+								
 							<label for="usrname">Username</label>
-							<input type="text" id="usrname" name="usrname" class="form-control form-control-lg font-weight-light mt-4" placeholder="Account" required>
-							<label for="psw">Password</label>
-							<input type="password" id="psw" name="psw" class="form-control form-control-lg font-weight-light mt-3" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-								required>
-							<input type="password" id="psw2" name="psw2" class="form-control form-control-lg font-weight-light mt-3" placeholder="Confirm Password" onkeyup="pw()"
-								title="兩次輸入的密碼要相同"  required> <span id="tishi"></span>
-							<input type="submit" id="submit" class="btn btn-primary btn-lg mt-3 ff-login-btn font-weight-bold" value="Create an account"><span class="wrong">${msgMapFromRegister.registerError}</span>
+							<input type="text" id="usrname" name="usrname" class="form-control form-control-lg font-weight-light mt-1"
+								placeholder="Account" required> 
+								
+							<div><label for="psw">Password</label>     <span id="tishi"></span></div>
+							<input type="password" id="psw" name="psw" class="form-control form-control-lg font-weight-light mt-1"
+								placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+							<input type="password" id="psw2" name="psw2" class="form-control form-control-lg font-weight-light mt-1"
+								placeholder="Confirm Password" onkeyup="pw()" title="兩次輸入的密碼要相同" required>
+							
+							<div>
+								<label for="captcha">驗證碼</label>
+								<img src="<c:url value="/login/getGifCode"/>">
+								<span class="wrong">${msgMapFromRegister.captchaError}</span>
+							</div>
+							<input type="text" id="captcha" name="captcha" class="form-control form-control-lg font-weight-light mt-1"
+								placeholder="captcha" required>
+							
+							<input type="submit" id="submit" class="btn btn-primary btn-lg mt-3 ff-login-btn font-weight-bold"
+								value="Create an account"> 
+							
+							<span class="wrong">${msgMapFromRegister.registerError}</span>
+
 						</form>
+						<div id="message">
+							<h5>你的密碼須符合</h5>
+							<p id="letter" class="invalid">
+								一個<b>小寫</b>英文字母
+							</p>
+							<p id="capital" class="invalid">
+								一個<b>大寫</b>英文字母
+							</p>
+							<p id="number" class="invalid">
+								一個<b>數字</b>
+							</p>
+							<p id="length" class="invalid">
+								最少<b>8個數字加英文字母</b>
+							</p>
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<div id="message">
-		<h5>你的密碼須符合</h5>
-		<p id="letter" class="invalid">
-			一個<b>小寫</b>英文字母
-		</p>
-		<p id="capital" class="invalid">
-			一個<b>大寫</b>英文字母
-		</p>
-		<p id="number" class="invalid">
-			一個<b>數字</b>
-		</p>
-		<p id="length" class="invalid">
-			最少<b>8個數字加英文字母</b>
-		</p>
-	</div>
+
 
 	<script>
 		var myInput = document.getElementById("psw");
@@ -88,7 +111,6 @@
 				number.classList.add("invalid");
 			}
 
-		
 			if (myInput.value.length >= 8) {
 				length.classList.remove("invalid");
 				length.classList.add("valid");
@@ -97,20 +119,18 @@
 				length.classList.add("invalid");
 			}
 		}
-		
-        function pw() {
-            var pw1 = document.getElementById("psw").value;
-            var pw2 = document.getElementById("psw2").value;
-            if(pw1 == pw2) {
-                document.getElementById("tishi").innerHTML="<font color='green'>兩次密碼相同</font>";
-                document.getElementById("submit").disabled = false;
-            }
-            else {
-                document.getElementById("tishi").innerHTML="<font color='red'>兩次密碼不相同</font>";
-              document.getElementById("submit").disabled = true;
-            }
-        }
-	 
+
+		function pw() {
+			var pw1 = document.getElementById("psw").value;
+			var pw2 = document.getElementById("psw2").value;
+			if (pw1 == pw2) {
+				document.getElementById("tishi").innerHTML = "<font color='green' size='2'>兩次密碼相同</font>";
+				document.getElementById("submit").disabled = false;
+			} else {
+				document.getElementById("tishi").innerHTML = "<font color='red' size='2'>兩次密碼不相同</font>";
+				document.getElementById("submit").disabled = true;
+			}
+		}
 	</script>
 
 </body>

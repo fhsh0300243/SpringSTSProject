@@ -1,43 +1,45 @@
 package tw.STSProject.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import tw.STSProject.model.StockInformation;
 
 public class STSNecessaryTools {
 	
+	private Process proc;
+
 	public StockInformation getStockInfoFromInternet(String stockCode) throws IOException, InterruptedException {
-		Runtime.getRuntime().exec("python GetStockInfoFromWeb.py "+stockCode);
-		Thread.sleep(3500);
-		StockInformation si=null;
-		String response="";
-		String fileName="stock_"+stockCode+".txt";
-		Scanner scanner = new Scanner( new File(fileName) );
-		while(scanner.hasNext()) {
-			response += scanner.next();
-		}
-		List<String> newResponse=new ArrayList<String>();
-		newResponse=Arrays.asList(response.split("'"));
+
+		StockInformation si= new StockInformation();
+		proc=Runtime.getRuntime().exec("python GetStockInfoFromWeb.py "+stockCode);
+		BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), "UTF-8"));
+		String line;
 		
-		si=new StockInformation();
-		si.setStockCode(newResponse.get(newResponse.indexOf("c")+2));
-		si.setStockName(newResponse.get(newResponse.indexOf("n")+2));
-		si.setTradePrice(Float.valueOf(newResponse.get(newResponse.indexOf("z")+2)));
-		si.setTradeVolume(Integer.valueOf(newResponse.get(newResponse.indexOf("tv")+2)));
-		si.setAccTradeVolume(Integer.valueOf(newResponse.get(newResponse.indexOf("v")+2)));
-		si.setOpeningPrice(Float.valueOf(newResponse.get(newResponse.indexOf("y")+2)));
-		si.setHighestPrice(Float.valueOf(newResponse.get(newResponse.indexOf("h")+2)));
-		si.setLowestPrice(Float.valueOf(newResponse.get(newResponse.indexOf("l")+2)));
-		si.setChange((Float.valueOf(newResponse.get(newResponse.indexOf("z")+2))-(Float.valueOf(newResponse.get(newResponse.indexOf("y")+2)))));
+        line=in.readLine(); 
+        System.out.println(line);
+        JSONObject msgArray = (JSONObject) new JSONObject(line).getJSONArray("msgArray").get(0);
+		
+        System.out.println(msgArray.get("n"));
+        
+        Thread.sleep(3500);
 		
 		
-		scanner.close();
-		return si;
+		
+		System.out.println(msgArray);
+		in.close();  
+        proc.waitFor(); 
+		return null;
+
 	}
 	
 	public void removePerStockInfoFile(String stockCode) {

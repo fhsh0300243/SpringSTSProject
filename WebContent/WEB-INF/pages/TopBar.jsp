@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="LogoutController">LOGOUT</a>
+<a href="/SpringStockTransSystem/logout/toLoginPage">LOGOUT</a>
 
 </body>
 </html>

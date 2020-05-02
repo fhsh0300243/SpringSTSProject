@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import tw.STSProject.util.STSNecessaryTools;
-
 
 @Repository
 public class OuputDAO implements IOutputDAO {
@@ -20,8 +20,10 @@ public class OuputDAO implements IOutputDAO {
 	private StockInformationService siService;
 	private InventoryService iService;
 	private TransactionRecordService trService;
-	
-	public OuputDAO(FavoriteStockService fsService, StockInformationService siService, InventoryService iService, TransactionRecordService trService) {
+
+	@Autowired
+	public OuputDAO(FavoriteStockService fsService, StockInformationService siService, 
+			InventoryService iService, TransactionRecordService trService) {
 		this.fsService=fsService;
 		this.siService=siService;
 		this.iService=iService;
@@ -30,7 +32,6 @@ public class OuputDAO implements IOutputDAO {
 
 	
 	public void outputFavoriteStockToCsv(int userID) throws IOException, SQLException {
-		
 		List<FavoriteStock> fsSearchResult=fsService.findAllUserFavoriteStock(userID);
 		Iterator<FavoriteStock> fsSearchResultIT =fsSearchResult.iterator();
 		
@@ -105,6 +106,8 @@ public class OuputDAO implements IOutputDAO {
 		while(ilIT.hasNext()) {
 			Inventory iBean=ilIT.next();
 			List<StockInformation> siList =siService.findStockInformation(iBean.getStockCode());
+			System.out.println(siList);
+			
 			Iterator<StockInformation> siListIT= siList.iterator();
 			StockInformation siBean=siListIT.next();
 			bw1.append("{"+

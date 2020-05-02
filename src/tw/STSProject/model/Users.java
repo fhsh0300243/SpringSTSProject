@@ -1,5 +1,7 @@
 package tw.STSProject.model;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +27,41 @@ public class Users {
 	@Column(name = "TOTALMONEY")
 	private int totalMoney;
 	
+	@Column(name = "EMAIL")
+	private String email;
+	
+	@Column(name = "ACTIVATED")
+	private boolean activated;
+	
+	@Column(name = "UUID")
+	private UUID uUID;
 	
 	
+	
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public UUID getuUID() {
+		return uUID;
+	}
+
+	public void setuUID(UUID uuid) {
+		this.uUID = uuid;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public int getUserID() {
 		return userID;
 	}

@@ -18,6 +18,8 @@
 
 	<mvc:annotation-driven />
 	<tx:annotation-driven />
+	
+	<mvc:annotation-driven ignore-default-model-on-redirect="true" />
 
 	<mvc:view-controller path="/"
 		view-name="redirect:/login/userLogin" />
