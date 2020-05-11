@@ -3,6 +3,7 @@ package tw.STSProject.model;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,15 @@ public class OutputService implements IOutputService{
 		oDAO.outputFavoriteStockToCsv(userID);
 	}
 	
-	public void outputStockInformationToJSON(int userID) throws IOException, SQLException{
-		oDAO.outputStockInformationToJSON(userID);
+	public JSONArray outputStockInformationToJSON(int userID) throws IOException, SQLException{
+		return oDAO.outputStockInformationToJSON(userID);
 	}
 	
-	public void outputInventoryToJSON(int userID) throws IOException, SQLException{
-		oDAO.outputInventoryToJSON(userID);
+	public JSONArray outputInventoryToJSON(int userID) throws IOException, SQLException{
+		return oDAO.outputInventoryToJSON(userID);
 	}
 	
-	public void outputTransactionRecordToJSON(int userID) throws IOException, SQLException{
-		oDAO.outputTransactionRecordToJSON(userID);
+	public JSONArray outputTransactionRecordToJSON(int userID) throws IOException, SQLException{
+		return oDAO.outputTransactionRecordToJSON(userID);
 	}
 }

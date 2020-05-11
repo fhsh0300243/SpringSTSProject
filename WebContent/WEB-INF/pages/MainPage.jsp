@@ -93,7 +93,7 @@
 						<th>現價</th>
 						<th>市值</th>
 					</tr>
-					<c:forEach var="id" items="${InventoryData}" varStatus="status">
+					<c:forEach var="id" items="${inventoryData}" varStatus="status">
 						<c:if test="${status.count%5==1}">
 							<tr>
 						</c:if>

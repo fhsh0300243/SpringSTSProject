@@ -22,7 +22,6 @@ public class FavoriteStockController {
 	private FavoriteStockService fsService;
 	private StockInformationService siService;
 	private OutputService oService;
-	private STSNecessaryTools stsnt=new STSNecessaryTools();
 	
 	@Autowired
 	public FavoriteStockController(FavoriteStockService fsService, StockInformationService siService, OutputService oService) {
@@ -31,11 +30,12 @@ public class FavoriteStockController {
 		this.siService=siService;
 	}
 	
-	@RequestMapping(path ="/add" , method = RequestMethod.POST)
+	@RequestMapping(path ="/add" , method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String addFavoriteStock(@RequestParam("Scode") String sCode, @ModelAttribute("userID") int userID) throws Exception {
-		StockInformation stock = stsnt.getStockInfoFromInternet(sCode);
-		Thread.sleep(1500);
-		siService.insertOrUpdateStockInformation(stock.getStockCode(), stock.getStockName(), stock.getTradePrice(),stock.getChange(), stock.getTradeVolume(), stock.getAccTradeVolume(), stock.getOpeningPrice(), stock.getHighestPrice(), stock.getLowestPrice());
+		STSNecessaryTools stsnt= new STSNecessaryTools();
+		StockInformation si= stsnt.getStockInfoFromInternet(sCode);
+        siService.insertOrUpdateStockInformation(si.getStockCode(), si.getStockName(), si.getTradePrice(), si.getChange(),
+        		si.getTradeVolume(), si.getAccTradeVolume(), si.getOpeningPrice(), si.getHighestPrice(), si.getLowestPrice());
 		fsService.insertFavoriteStock(userID, sCode);
 		oService.outputStockInformationToJSON(userID);
 		return "redirect:/main/toMainTable";

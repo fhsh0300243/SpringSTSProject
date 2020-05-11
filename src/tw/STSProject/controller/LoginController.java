@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,20 +43,19 @@ public class LoginController {
 	}
 	
 	@RequestMapping(path = "/userLogin", method = RequestMethod.GET)
-	public String goToLoginPage(Model model) throws IOException, Exception {
-		String TAIEX=stsnt.getTAIEXFromInternet();
-		model.addAttribute("TAIEX",TAIEX);
+	public String goToLoginPage(Model model) throws Exception {
+		Thread.sleep(3500);
 		return "UserLogin";
 	}
 	
 	@RequestMapping(path = "/userLoginCheck", method = RequestMethod.POST)
 	public String processLoginAction(@RequestParam(value="userName", required=false) String userAccount,
 			@RequestParam(value="userPassword", required=false) String userPwd,
-			 Model model) throws IOException, Exception {
-		String TAIEX=stsnt.getTAIEXFromInternet();
+			 Model model) throws Exception {
+		Thread.sleep(3500);
 		Map<String, String> errorMsgMap = new HashMap<String, String>();
 		model.addAttribute("errorMsgMap", errorMsgMap);
-		model.addAttribute("TAIEX",TAIEX);
+		
 		
 		if((userAccount==null || userAccount.trim().length() == 0) && (userPwd==null || userPwd.trim().length() == 0)) {
 			errorMsgMap.put("NoLoginError", "Please Login again");
@@ -125,7 +125,7 @@ public class LoginController {
 			Users uBean=uList.get(0);
 			eu.sendAccountActivateEmail(uBean);
 			msgMapFromRegister.put("registerOK", "註冊成功 請先前往E-mail信箱收啟用信");
-			String TAIEX=stsnt.getTAIEXFromInternet();
+			Map<String,String> TAIEX=stsnt.getTAIEXFromInternet();
 			model.addAttribute("TAIEX",TAIEX);
 			return "UserLogin";
 		}
@@ -187,7 +187,7 @@ public class LoginController {
 	
 	@RequestMapping(path = "/activateAccount", method = RequestMethod.GET)
 	public String activateAcc(@RequestParam("id") String idValue, @RequestParam("checkCode") String checkCode, Model model) throws Exception {
-		Map<String, String> MsgFromActivateAccount = new HashMap<String, String>();
+		Map<String, String> MsgFromActivateAccount = new HashMap<>();
 		model.addAttribute("MsgFromActivateAccount",MsgFromActivateAccount);
 		int id = -1;
 		try {
@@ -201,8 +201,7 @@ public class LoginController {
 		GenerateLinkUtil glu=new GenerateLinkUtil();
 		uService.updateUserActivated(id, glu.verifyCheckcode(usersList.get(0), checkCode));
 		MsgFromActivateAccount.put("ActivateSucess", "啟用成功 請重新登入");
-		String TAIEX=stsnt.getTAIEXFromInternet();
-		model.addAttribute("TAIEX",TAIEX);
+		Thread.sleep(3500);
 		return "UserLogin";
 	}
 	

@@ -24,7 +24,7 @@ import tw.STSProject.model.UsersService;
 import tw.STSProject.util.STSNecessaryTools;
 
 @Controller
-@SessionAttributes(names = {"userID", "userMoney", "errorMsgMapFromOrder"})
+@SessionAttributes(names = {"userID", "userMoney", "LoginOK", "qantity", "stockCode","errorMsgMapFromOrder"})
 @RequestMapping(path ="/order")
 public class OrderController {
 	private StockInformationService siService;
@@ -65,7 +65,7 @@ public class OrderController {
 	
 	@RequestMapping(path = "/buyOrSell", method = {RequestMethod.POST,RequestMethod.GET})
 	public String checkBuyOrSell(@RequestParam("buyOrSell") String buyOrSell, @RequestParam("qantity") int qantity, 
-			@RequestParam("stockCode") String stockCode,Model model) throws IOException, Exception {
+			@RequestParam("stockCode") String stockCode, Model model) throws IOException, Exception {
 		model.addAttribute("qantity", qantity);
 		model.addAttribute("stockCode", stockCode);
 		if(buyOrSell.equals("buy")) {
@@ -78,12 +78,13 @@ public class OrderController {
 	@RequestMapping(path = "/buy", method = {RequestMethod.POST,RequestMethod.GET})
 	public String buyStock(@ModelAttribute("qantity") int qantity, @ModelAttribute("stockCode") String stockCode, 
 			@ModelAttribute("userID") int userID, @ModelAttribute("userMoney") int userMoney , Model model) throws Exception {
+		System.out.println("userID: "+userID);
 		resultMapForBuyOrSell=preOder(stockCode, userID);
 		siBean=(StockInformation)resultMapForBuyOrSell.get("si");
 		Iterator<Inventory> iListIT=(Iterator<Inventory>) resultMapForBuyOrSell.get("iListIT");
 
 		if(siBean.getTradePrice()*qantity>userMoney) {
-			errorMsgMapFromOrder.put("moneyError", "§Aªº¼ÒÀÀ¹ô¤£°÷");
+			errorMsgMapFromOrder.put("moneyError", "ä½ çš„æ¨¡æ“¬å¹£ä¸å¤ ");
 			model.addAttribute("errorMsgMapFromOrder", errorMsgMapFromOrder);
 			return "redirect:/main/toMainTable";
 		}
@@ -118,7 +119,7 @@ public class OrderController {
 				quantityInInventory=in.getQuantity();	
 		}
 		if(qantity>quantityInInventory) {
-			errorMsgMapFromOrder.put("inventoryError", "§Aªº®w¦s¤£°÷");
+			errorMsgMapFromOrder.put("inventoryError", "ï¿½Aï¿½ï¿½ï¿½wï¿½sï¿½ï¿½ï¿½ï¿½");
 			model.addAttribute("errorMsgMapFromOrder", errorMsgMapFromOrder);
 			return "redirect:/main/toMainTable";
 		}

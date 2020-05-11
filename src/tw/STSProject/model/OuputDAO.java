@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +34,7 @@ public class OuputDAO implements IOutputDAO {
 
 	
 	public void outputFavoriteStockToCsv(int userID) throws IOException, SQLException {
+
 		List<FavoriteStock> fsSearchResult=fsService.findAllUserFavoriteStock(userID);
 		Iterator<FavoriteStock> fsSearchResultIT =fsSearchResult.iterator();
 		
@@ -60,15 +63,11 @@ public class OuputDAO implements IOutputDAO {
 		bw.close();
 	}
 	
-	public void outputStockInformationToJSON(int userID) throws IOException, SQLException {
-		STSNecessaryTools stsnt=new STSNecessaryTools();
-		stsnt.removeStockInformationFile();
-		
+	public JSONArray outputStockInformationToJSON(int userID) throws IOException, SQLException {	
 		List<FavoriteStock> fsSearchResult=fsService.findAllUserFavoriteStock(userID);
-		System.out.println("fsSearchResult: "+fsSearchResult);
 		Iterator<FavoriteStock> fsSearchResultIT =fsSearchResult.iterator();
 		
-		List<StockInformation> siList = new ArrayList<StockInformation>();
+		List<StockInformation> siList = new ArrayList<>();
 		while(fsSearchResultIT.hasNext()) {
 			FavoriteStock fsBean = fsSearchResultIT.next();
 			List<StockInformation> siListTemp = siService.findStockInformation(fsBean.getStockCode());
@@ -76,76 +75,62 @@ public class OuputDAO implements IOutputDAO {
 	    }
 		
 		Iterator<StockInformation> siListIT =siList.iterator();	
-		BufferedWriter bw = new BufferedWriter(new FileWriter("StockInformation.json",true));
+		JSONArray jArray = new JSONArray();
 		while(siListIT.hasNext()) {
+			JSONObject jObject = new JSONObject();
 			StockInformation siBean=siListIT.next();
-			bw.append("{"+
-					"\"StockCode\""+":"+"\""+siBean.getStockCode()+"\""+","+
-					"\"StockName\""+":"+"\""+siBean.getStockName()+"\""+","+
-					"\"TradePrice\""+":"+"\""+Float.toString(siBean.getTradePrice())+"\""+","+
-					"\"Change\""+":"+"\""+Float.toString(siBean.getChange())+"\""+","+
-					"\"TradeVolume\""+":"+"\""+Integer.toString(siBean.getTradeVolume())+"\""+","+
-					"\"AccTradeVolume\""+":"+"\""+Integer.toString(siBean.getAccTradeVolume())+"\""+","+
-					"\"OpeningPrice\""+":"+"\""+Float.toString(siBean.getOpeningPrice())+"\""+","+
-					"\"HighestPrice\""+":"+"\""+Float.toString(siBean.getHighestPrice())+"\""+","+
-					"\"LowestPrice\""+":"+"\""+Float.toString(siBean.getLowestPrice())+"\""+
-					"}");
-			bw.newLine();
+			jObject.put("StockCode", siBean.getStockCode());
+			jObject.put("StockName", siBean.getStockName());
+			jObject.put("TradePrice", Float.toString(siBean.getTradePrice()));
+			jObject.put("Change", Float.toString(siBean.getChange()));
+			jObject.put("TradeVolume", Integer.toString(siBean.getTradeVolume()));
+			jObject.put("AccTradeVolume", Integer.toString(siBean.getAccTradeVolume()));
+			jObject.put("OpeningPrice", Float.toString(siBean.getOpeningPrice()));
+			jObject.put("HighestPrice", Float.toString(siBean.getHighestPrice()));
+			jObject.put("LowestPrice", Float.toString(siBean.getLowestPrice()));
+			jArray.put(jObject);
 		}
-		bw.flush();
-		bw.close();
+		return jArray;
 	}
 	
-	public void outputInventoryToJSON(int userID) throws IOException, SQLException {
-		STSNecessaryTools stsnt=new STSNecessaryTools();
-		stsnt.removeInventoryFile();
-		
+	public JSONArray outputInventoryToJSON(int userID) throws IOException, SQLException {
 		List<Inventory> inventoryList =iService.findAllUserInventory(userID);
 		Iterator<Inventory> ilIT = inventoryList.iterator();
-		BufferedWriter bw1 = new BufferedWriter(new FileWriter("Inventory.json",true));
+		JSONArray jArray = new JSONArray();
 		while(ilIT.hasNext()) {
+			JSONObject jObject = new JSONObject();
 			Inventory iBean=ilIT.next();
 			List<StockInformation> siList =siService.findStockInformation(iBean.getStockCode());
-			System.out.println(siList);
-			
 			Iterator<StockInformation> siListIT= siList.iterator();
 			StockInformation siBean=siListIT.next();
-			bw1.append("{"+
-					   "\"StockCode\""+":"+"\""+iBean.getStockCode()+"\""+","+
-					   "\"StockName\""+":"+"\""+siBean.getStockName()+"\""+","+
-					   "\"Quantity\""+":"+"\""+String.valueOf(iBean.getQuantity())+"\""+","+
-					   "\"TradePrice\""+":"+"\""+String.valueOf(siBean.getTradePrice())+"\""+","+
-					   "\"MarketCap\""+":"+"\""+String.valueOf(iBean.getQuantity()*siBean.getTradePrice())+"\""+","+
-					   "}");
-			bw1.newLine();
+			jObject.put("StockCode", iBean.getStockCode());
+			jObject.put("StockName", siBean.getStockName());
+			jObject.put("Quantity", String.valueOf(iBean.getQuantity()));
+			jObject.put("TradePrice", String.valueOf(siBean.getTradePrice()));
+			jObject.put("MarketCap", String.valueOf(iBean.getQuantity()*siBean.getTradePrice()));
+			jArray.put(jObject);
 		}
-		bw1.flush();
-		bw1.close();
+		return jArray;
 	}
 	
-	public void outputTransactionRecordToJSON(int userID) throws IOException, SQLException{
-		STSNecessaryTools stsnt=new STSNecessaryTools();
-		stsnt.removeTransanctionRecordFile();
-		
+	public JSONArray outputTransactionRecordToJSON(int userID) throws IOException, SQLException{
 		List<TransactionRecord> trList =trService.findAllUserTransactionRecord(userID);
 		Iterator<TransactionRecord> trListIT=trList.iterator();
-		BufferedWriter bw2 = new BufferedWriter(new FileWriter("TransactionRecord.json",true));
+		JSONArray jArray = new JSONArray();
 		while(trListIT.hasNext()) {
+			JSONObject jObject = new JSONObject();
 			TransactionRecord trBean=trListIT.next();
 			List<StockInformation> siList =siService.findStockInformation(trBean.getStockCode());
 			Iterator<StockInformation> siListIT= siList.iterator();
 			StockInformation siBean=siListIT.next();
-			bw2.append("{"+
-					"\"StockCode\""+":"+"\""+trBean.getStockCode()+"\""+","+
-					"\"StockName\""+":"+"\""+siBean.getStockName()+"\""+","+
-					"\"SellOrBuy\""+":"+"\""+trBean.getSellOrBuy()+"\""+","+
-					"\"Quantity\""+":"+"\""+String.valueOf(trBean.getQuantity())+"\""+","+
-					"\"TradePrice\""+":"+"\""+String.valueOf(trBean.getPrice())+"\""+","+
-					"\"TradeDay\""+":"+"\""+trBean.getRecordDay()+"\""+","+
-					"}");
-			bw2.newLine();
+			jObject.put("StockCode", trBean.getStockCode());
+			jObject.put("StockName", siBean.getStockName());
+			jObject.put("SellOrBuy", trBean.getSellOrBuy());
+			jObject.put("Quantity", String.valueOf(trBean.getQuantity()));
+			jObject.put("TradePrice", String.valueOf(trBean.getPrice()));
+			jObject.put("TradeDay", trBean.getRecordDay());
+			jArray.put(jObject);
 		}
-		bw2.flush();
-		bw2.close();
+		return jArray;
 	}
 }
