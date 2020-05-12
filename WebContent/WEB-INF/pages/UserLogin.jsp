@@ -76,17 +76,17 @@ $.ajax({
 		if(parseFloat(index.BUYZ_Y)==0){
 			document.getElementById('td2').innerHTML="<h3 class='subTitle'>"+index.BUYname+"</h3><div class='TAIEX' style='color:white;'>"+index.BUY+"</div><span class='TAIEXY'>昨日收盤: "+index.BUYY+" </span><span style='color:white;'>漲跌: </span><span style='color:white;'>"+index.BUYZ_Y+"</span>"
 			}
-		if(parseFloat(index.TBUYZ_Y)<0){
+		if(parseFloat(index.BUYZ_Y)<0){
 			document.getElementById('td2').innerHTML="<h3 class='subTitle'>"+index.BUYname+"</h3><div class='TAIEX' style='color:#77ff00;'>"+index.BUY+"</div><span class='TAIEXY'>昨日收盤: "+index.BUYY+" </span><span style='color:#77ff00;'>漲跌: </span><span style='color:#77ff00;'>"+index.BUYZ_Y+"</span>"
 			}
 
-		if(parseFloat(index.BUYZ_Y)>0){
+		if(parseFloat(index.FormosaZ_Y)>0){
 			document.getElementById('td3').innerHTML="<h3 class='subTitle'>"+index.FormosaName+"</h3><div class='TAIEX' style='color:red;'>"+index.Formosa+"</div><span class='TAIEXY'>昨日收盤: "+index.FormosaY+" </span><span style='color:red;'>漲跌: </span><span style='color:red;'>"+index.FormosaZ_Y+"</span>"
 			}
-		if(parseFloat(index.BUYZ_Y)==0){
+		if(parseFloat(index.FormosaZ_Y)==0){
 			document.getElementById('td3').innerHTML="<h3 class='subTitle'>"+index.FormosaName+"</h3><div class='TAIEX' style='color:white;'>"+index.Formosa+"</div><span class='TAIEXY'>昨日收盤: "+index.FormosaY+" </span><span style='color:white;'>漲跌: </span><span style='color:white;'>"+index.FormosaZ_Y+"</span>"
 			}
-		if(parseFloat(index.TBUYZ_Y)<0){
+		if(parseFloat(index.FormosaZ_Y)<0){
 			document.getElementById('td3').innerHTML="<h3 class='subTitle'>"+index.FormosaName+"</h3><div class='TAIEX' style='color:#77ff00;'>"+index.Formosa+"</div><span class='TAIEXY'>昨日收盤: "+index.FormosaY+" </span><span style='color:#77ff00;'>漲跌: </span><span style='color:#77ff00;'>"+index.FormosaZ_Y+"</span>"
 			}
 		
